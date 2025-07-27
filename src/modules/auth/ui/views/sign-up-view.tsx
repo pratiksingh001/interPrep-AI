@@ -20,17 +20,21 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaGithub , FaGoogle } from "react-icons/fa";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 
-const formSchema = z.object({
-   name: z.string().min(1, { message: "Name is required" }),
-   email: z.string().email(),
-   password: z.string().min(1, { message: "Password is required" }),
-   confirmPassword: z.string().min(1, { message: "Confirm password is required" }),
-}).refine((data) => data.password === data.confirmPassword, {
-   path: ["confirmPassword"],
-   message: "Passwords do not match",
-})
+const formSchema = z
+   .object({
+      name: z.string().min(1, { message: "Name is required" }),
+      email: z.string().email(),
+      password: z.string().min(1, { message: "Password is required" }),
+      confirmPassword: z
+         .string()
+         .min(1, { message: "Confirm password is required" }),
+   })
+   .refine(data => data.password === data.confirmPassword, {
+      path: ["confirmPassword"],
+      message: "Passwords do not match",
+   });
 
 export const SignUpView = () => {
    const [error, setError] = useState<string | null>(null);
@@ -56,12 +60,12 @@ export const SignUpView = () => {
             name: data.name,
             email: data.email,
             password: data.password,
-            callbackURL: "/"
+            callbackURL: "/",
          },
          {
             onSuccess: () => {
                setPending(false);
-               router.push("/")
+               router.push("/");
             },
             onError: ({ error }) => {
                setPending(false);
@@ -77,8 +81,8 @@ export const SignUpView = () => {
 
       authClient.signIn.social(
          {
-            provider : provider,
-            callbackURL: "/"
+            provider: provider,
+            callbackURL: "/",
          },
          {
             onSuccess: () => {
@@ -103,15 +107,17 @@ export const SignUpView = () => {
                   >
                      <div className="flex flex-col gap-6">
                         <div className="flex flex-col items-center text-center">
-                           <h1 className="text-2xl font-bold">Let&apos;s get started</h1>
+                           <h1 className="text-2xl font-bold">
+                              Let&apos;s get started
+                           </h1>
                            <p className="text-muted-foreground text-balance">
-                             Create your account
+                              Create your account
                            </p>
                         </div>
                         <div className="grid gap-3">
                            <FormField
                               control={form.control}
-                              name="name" 
+                              name="name"
                               render={({ field }) => (
                                  <FormItem>
                                     <FormLabel>Name</FormLabel>
@@ -129,7 +135,7 @@ export const SignUpView = () => {
                         <div className="grid gap-3">
                            <FormField
                               control={form.control}
-                              name="email" 
+                              name="email"
                               render={({ field }) => (
                                  <FormItem>
                                     <FormLabel>Email</FormLabel>
@@ -233,14 +239,14 @@ export const SignUpView = () => {
                   </form>
                </Form>
 
-               <div className="bg-radial from-green-700 to-green-900 relative hidden md:flex flex-col gap-y-4 items-center justify-center">
+               <div className="bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col gap-y-4 items-center justify-center">
                   <img
                      src="/logo.svg"
                      alt="logo"
                      className="h-[92px] w-[92px]"
                   />
                   <p className="text-2xl font-semibold text-white">
-                     interview fun ai
+                     InterPrep AI
                   </p>
                </div>
             </CardContent>
