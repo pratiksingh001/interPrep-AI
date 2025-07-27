@@ -20,8 +20,7 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaGithub , FaGoogle } from "react-icons/fa";
-
+import { FaGithub, FaGoogle } from "react-icons/fa";
 
 const formSchema = z.object({
    email: z.string().email(),
@@ -31,7 +30,7 @@ const formSchema = z.object({
 export const SignInView = () => {
    const [error, setError] = useState<string | null>(null);
    const [pending, setPending] = useState(false);
-   const router = useRouter();   
+   const router = useRouter();
    const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
@@ -48,13 +47,13 @@ export const SignInView = () => {
          {
             email: data.email,
             password: data.password,
-            callbackURL: "/"
+            callbackURL: "/",
          },
          {
             onSuccess: () => {
                setPending(false);
-               router.push("/")
-               },
+               router.push("/");
+            },
             onError: ({ error }) => {
                setPending(false);
                setError(error.message);
@@ -69,13 +68,13 @@ export const SignInView = () => {
 
       authClient.signIn.social(
          {
-            provider : provider,
-            callbackURL: "/"
+            provider: provider,
+            callbackURL: "/",
          },
          {
             onSuccess: () => {
                setPending(false);
-               router.push("/")
+               router.push("/");
             },
             onError: ({ error }) => {
                setPending(false);
@@ -189,14 +188,14 @@ export const SignInView = () => {
                   </form>
                </Form>
 
-               <div className="bg-radial from-green-700 to-green-900 relative hidden md:flex flex-col gap-y-4 items-center justify-center">
+               <div className="bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col gap-y-4 items-center justify-center">
                   <img
                      src="/logo.svg"
                      alt="logo"
                      className="h-[92px] w-[92px]"
                   />
                   <p className="text-2xl font-semibold text-white">
-                     interview fun ai
+                     InterPrep AI
                   </p>
                </div>
             </CardContent>
