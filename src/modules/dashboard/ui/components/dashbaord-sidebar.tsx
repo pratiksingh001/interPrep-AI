@@ -47,7 +47,12 @@ export const DashboardSidebar = () => {
       <Sidebar>
          <SidebarHeader className="text-sidebar-accent-foreground">
             <Link href="/" className="flex items-center gap-2 px-2 pt-2">
-               <Image src="/logo.svg" alt="logo" width={36} height={36} />
+               <Image
+                  src="/inter-prep-ai-logo.svg"
+                  alt="logo"
+                  width={36}
+                  height={36}
+               />
                <p className="text-2xl font-semibold">InterPrep AI</p>
             </Link>
          </SidebarHeader>

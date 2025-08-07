@@ -1,10 +1,5 @@
 "use client";
 
 export const HomeView = () => {
-
-   return (
-      <div>
-        Home View
-      </div>
-   );
+   return <div>Home View</div>;
 };
