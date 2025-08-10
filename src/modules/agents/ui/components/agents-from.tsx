@@ -77,11 +77,11 @@ const AgentsForm = ({ onSuccess, onCancel, initialValues }: AgentFormProps) => {
    });
 
    const isEdit = !!initialValues?.id;
-   const isPending = createAgent.isPending || updateAgent.isPending
+   const isPending = createAgent.isPending || updateAgent.isPending;
 
    const onSubmit = (values: z.infer<typeof agentInsertSchema>) => {
       if (isEdit) {
-         updateAgent.mutate({ ...values, id: initialValues.id})
+         updateAgent.mutate({ ...values, id: initialValues.id });
       } else {
          createAgent.mutate(values);
       }
@@ -138,7 +138,7 @@ const AgentsForm = ({ onSuccess, onCancel, initialValues }: AgentFormProps) => {
                      Cancel
                   </Button>
                )}
-               <Button type="submit" disabled={isPending}>
+               <Button type="submit" loading={isPending}>
                   {isEdit ? "Update" : "Create"}
                </Button>
             </div>

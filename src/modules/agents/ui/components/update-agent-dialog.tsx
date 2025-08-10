@@ -8,7 +8,11 @@ interface NewAgentDialogProps {
    initialValues: AgentGetOne;
 }
 
-const UpdateAgentDialog = ({ open, onOpenChange, initialValues }: NewAgentDialogProps) => {
+const UpdateAgentDialog = ({
+   open,
+   onOpenChange,
+   initialValues,
+}: NewAgentDialogProps) => {
    return (
       <ResponsiveDialog
          open={open}

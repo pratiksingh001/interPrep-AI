@@ -6,8 +6,18 @@ import {
    BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent } from "@/components/ui/dropdown-menu";
-import { ChevronRightIcon, TrashIcon, PencilIcon, MoreVerticalIcon } from "lucide-react";
+import {
+   DropdownMenu,
+   DropdownMenuTrigger,
+   DropdownMenuItem,
+   DropdownMenuContent,
+} from "@/components/ui/dropdown-menu";
+import {
+   ChevronRightIcon,
+   TrashIcon,
+   PencilIcon,
+   MoreVerticalIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 interface Props {
@@ -33,10 +43,13 @@ export const AgentIdViewHeader = ({
                   </BreadcrumbLink>
                </BreadcrumbItem>
                <BreadcrumbSeparator className="text-foreground text-xl font-medium [&>svg]:size-4">
-                    <ChevronRightIcon />
+                  <ChevronRightIcon />
                </BreadcrumbSeparator>
                <BreadcrumbItem>
-                  <BreadcrumbLink asChild className="font-medium text-xl text-foreground">
+                  <BreadcrumbLink
+                     asChild
+                     className="font-medium text-xl text-foreground"
+                  >
                      <Link href={`/agents/${agentId}`}>{agentName}</Link>
                   </BreadcrumbLink>
                </BreadcrumbItem>
@@ -44,19 +57,19 @@ export const AgentIdViewHeader = ({
          </Breadcrumb>
          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-                <Button variant='ghost'>
-                    <MoreVerticalIcon />
-                </Button>
+               <Button variant="ghost">
+                  <MoreVerticalIcon />
+               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end"> 
-                <DropdownMenuItem onClick={onEdit}>
-                    <PencilIcon className="size-4 text-black" />
-                        Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={onRemove}>
-                    <TrashIcon className="size-4 text-black" />
-                        Delete
-                </DropdownMenuItem>
+            <DropdownMenuContent align="end">
+               <DropdownMenuItem onClick={onEdit}>
+                  <PencilIcon className="size-4 text-black" />
+                  Edit
+               </DropdownMenuItem>
+               <DropdownMenuItem onClick={onRemove}>
+                  <TrashIcon className="size-4 text-black" />
+                  Delete
+               </DropdownMenuItem>
             </DropdownMenuContent>
          </DropdownMenu>
       </div>

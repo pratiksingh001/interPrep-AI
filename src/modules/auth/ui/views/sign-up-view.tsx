@@ -195,11 +195,11 @@ export const SignUpView = () => {
                            </Alert>
                         )}
                         <Button
-                           disabled={pending}
+                           loading={pending}
                            type="submit"
                            className="w-full"
                         >
-                           Sign In
+                           Sign Up
                         </Button>
                         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:justify-center after:border-t">
                            <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -212,6 +212,7 @@ export const SignUpView = () => {
                               onClick={() => onSocial("google")}
                               type="button"
                               className="w-full"
+                              loading={pending}
                            >
                               <FaGoogle />
                            </Button>
@@ -220,6 +221,7 @@ export const SignUpView = () => {
                               onClick={() => onSocial("github")}
                               type="button"
                               className="w-full"
+                              loading={pending}
                            >
                               <FaGithub />
                            </Button>

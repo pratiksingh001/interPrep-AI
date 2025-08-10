@@ -144,7 +144,7 @@ export const SignInView = () => {
                            </Alert>
                         )}
                         <Button
-                           disabled={pending}
+                           loading={pending}
                            type="submit"
                            className="w-full"
                         >
@@ -161,6 +161,7 @@ export const SignInView = () => {
                               onClick={() => onSocial("google")}
                               type="button"
                               className="w-full"
+                              loading={pending}
                            >
                               <FaGoogle />
                            </Button>
@@ -169,6 +170,7 @@ export const SignInView = () => {
                               onClick={() => onSocial("github")}
                               type="button"
                               className="w-full"
+                              loading={pending}
                            >
                               <FaGithub />
                            </Button>
