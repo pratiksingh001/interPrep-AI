@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { agents } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { agentInsertSchema } from "../schemas";
+import { agentInsertSchema, agentsUpdateSchema } from "../schemas";
 import { z } from "zod";
 import { and, desc, eq, getTableColumns, ilike, sql, count } from "drizzle-orm";
 import {
@@ -26,9 +26,20 @@ export const agentsRouter = createTRPCRouter({
                meetingCount: sql<number>`1`,
             })
             .from(agents)
-            .where(eq(agents.id, input.id));
+            .where(
+               and(
+                  eq(agents.id, input.id),
+                  eq(agents.user_id, ctx.auth.user.id)
+               )
+            );
 
-         await new Promise(resolve => setTimeout(resolve, 5000));
+         if (!existingAgent) {
+            throw new TRPCError({
+               code: "NOT_FOUND",
+               message: "Agent not found",
+            });
+         }
+         // await new Promise(resolve => setTimeout(resolve, 5000));
 
          // throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
          return existingAgent;
@@ -96,4 +107,43 @@ export const agentsRouter = createTRPCRouter({
 
          return createdAgent;
       }),
+   remove: protectedProcedure
+      .input(z.object({ id: z.string()}))
+      .mutation(async ({ctx, input}) => {
+         const [ removedAgent ] = await db
+            .delete(agents)
+            .where(
+               and(
+                  eq(agents.id , input.id),
+                  eq(agents.user_id, ctx.auth.user.id)
+               ),
+            )
+            .returning();
+         
+         if(!removedAgent){
+            throw new TRPCError({code: "NOT_FOUND", message: "AGENT NOT FOUND" })
+         }
+
+         return removedAgent
+      }),
+   update: protectedProcedure
+      .input(agentsUpdateSchema)
+      .mutation(async ({ctx, input}) => {
+         const [updatedAgent] = await db
+            .update(agents)
+            .set(input)
+            .where(
+               and(
+                  eq(agents.id , input.id),
+                  eq(agents.user_id, ctx.auth.user.id)
+               )
+            )
+            .returning()
+
+         if(!updatedAgent){
+            throw new TRPCError({code: "NOT_FOUND", message: "AGENT NOT FOUND" })
+         }
+
+         return updatedAgent
+      })
 });
