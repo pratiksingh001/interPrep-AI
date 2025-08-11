@@ -106,7 +106,10 @@ const MeetingsForm = ({
 
    return (
       <>
-         <NewAgentDialog open={openNewAgentDialog} onOpenChange={setOpenNewAgentDialog} />
+         <NewAgentDialog
+            open={openNewAgentDialog}
+            onOpenChange={setOpenNewAgentDialog}
+         />
          <Form {...form}>
             <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
                <FormField
@@ -133,20 +136,22 @@ const MeetingsForm = ({
                         <FormLabel>Agent</FormLabel>
                         <FormControl>
                            <CommandSelect
-                              options={(agents.data?.items ?? []).map((agent) => ({
-                                 id: agent.id,
-                                 value: agent.id,
-                                 children: (
-                                    <div className="flex items-center gap-x-2">
-                                       <GeneratedAvatar
-                                          seed={agent.name}
-                                          variant="botttsNeutral"
-                                          className="border size-6"
-                                       />
-                                       <span>{agent.name}</span>
-                                    </div>
-                                 ),
-                              }))}
+                              options={(agents.data?.items ?? []).map(
+                                 agent => ({
+                                    id: agent.id,
+                                    value: agent.id,
+                                    children: (
+                                       <div className="flex items-center gap-x-2">
+                                          <GeneratedAvatar
+                                             seed={agent.name}
+                                             variant="botttsNeutral"
+                                             className="border size-6"
+                                          />
+                                          <span>{agent.name}</span>
+                                       </div>
+                                    ),
+                                 })
+                              )}
                               onSelect={field.onChange}
                               onSearch={setAgentSearch}
                               value={field.value}
@@ -154,11 +159,11 @@ const MeetingsForm = ({
                            />
                         </FormControl>
                         <FormDescription>
-                           Not found what you&apos;re lokking for {" "}
-                           <button 
-                              type= "button"
+                           Not found what you&apos;re lokking for{" "}
+                           <button
+                              type="button"
                               className="text-primary hover:underline"
-                              onClick={() => setOpenNewAgentDialog(true )}
+                              onClick={() => setOpenNewAgentDialog(true)}
                            >
                               Create new agent
                            </button>

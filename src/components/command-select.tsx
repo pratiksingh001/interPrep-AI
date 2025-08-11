@@ -52,7 +52,11 @@ export const CommandSelect = ({
             <div>{selectedOption?.children ?? placeholder}</div>
             <ChevronsUpDownIcon />
          </Button>
-         <CommandResponsiveDialog open={open} onOpenChange={setOpen} shouldFilter={!onSearch}>
+         <CommandResponsiveDialog
+            open={open}
+            onOpenChange={setOpen}
+            shouldFilter={!onSearch}
+         >
             <CommandInput placeholder="Search..." onValueChange={onSearch} />
             <CommandList>
                <CommandEmpty>
@@ -64,8 +68,8 @@ export const CommandSelect = ({
                   <CommandItem
                      key={option.id}
                      onSelect={() => {
-                        onSelect(option.value)
-                        setOpen(false)
+                        onSelect(option.value);
+                        setOpen(false);
                      }}
                   >
                      {option.children}
