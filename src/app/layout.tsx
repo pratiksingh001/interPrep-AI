@@ -14,6 +14,18 @@ const inter = Inter({
 export const metadata: Metadata = {
    title: "InterPrep AI",
    description: "Your interview prep partner",
+   icons: {
+      icon: [
+         {
+            url: "/inter-prep-ai-logo.svg",
+            type: "image/svg+xml",
+         },
+         {
+            url: "/favicon.ico",
+            sizes: "32x32",
+         },
+      ],
+   },
 };
 
 export default function RootLayout({

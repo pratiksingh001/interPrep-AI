@@ -11,10 +11,11 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { DEFAULT_PAGE } from "@/constants";
 
 export const MeetingsListHeader = () => {
-   const [filters, setFilters] = useMeetingsFilters()
+   const [filters, setFilters] = useMeetingsFilters();
    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-   const isAnyFilterModified = !!filters.status || !!filters.search || !!filters.agentId
+   const isAnyFilterModified =
+      !!filters.status || !!filters.search || !!filters.agentId;
 
    const onClearFilters = () => {
       setFilters({
@@ -22,8 +23,8 @@ export const MeetingsListHeader = () => {
          agentId: "",
          search: "",
          page: DEFAULT_PAGE,
-      })
-   }
+      });
+   };
    return (
       <>
          <NewMeetingDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
@@ -42,7 +43,7 @@ export const MeetingsListHeader = () => {
                   <AgentIdFilter />
                   {isAnyFilterModified && (
                      <Button variant="outline" onClick={onClearFilters}>
-                        <XCircleIcon className="size-4"/>
+                        <XCircleIcon className="size-4" />
                         Clear
                      </Button>
                   )}

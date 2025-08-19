@@ -15,12 +15,11 @@ import { loadSearchParams } from "@/modules/agents/params";
 import type { SearchParams } from "nuqs/server";
 
 interface Props {
-   searchParams : Promise<SearchParams>
+   searchParams: Promise<SearchParams>;
 }
 
-const Page = async ({searchParams}:Props) => {
-
-   const filters = await loadSearchParams(searchParams)
+const Page = async ({ searchParams }: Props) => {
+   const filters = await loadSearchParams(searchParams);
    const session = await auth.api.getSession({
       headers: await headers(),
    });
@@ -30,9 +29,11 @@ const Page = async ({searchParams}:Props) => {
    }
    const queryClient = getQueryClient();
 
-   void queryClient.prefetchQuery(trpc.meetings.getMany.queryOptions({
-      ...filters
-   }));
+   void queryClient.prefetchQuery(
+      trpc.meetings.getMany.queryOptions({
+         ...filters,
+      })
+   );
    return (
       <>
          <MeetingsListHeader />
