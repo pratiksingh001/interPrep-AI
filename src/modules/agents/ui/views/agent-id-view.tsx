@@ -67,34 +67,40 @@ export const AgentIdView = ({ agentId }: Props) => {
             onOpenChange={setUpdateAgentDialogOpen}
             initialValues={data}
          />
-         <div className="flex-1 px-4 py-4 md:px-8 flex flex-col gap-y-4">
+         <div className="flex-1 px-4 py-4 md:px-8 flex flex-col gap-y-4 bg-black min-h-screen">
             <AgentIdViewHeader
                agentId={agentId}
                agentName={data.name}
                onEdit={() => setUpdateAgentDialogOpen(true)}
                onRemove={handleRemoveAgent}
             />
-            <div className="bg-white rounded-lg border">
-               <div className="px-4 py-5 gap-y-5 flex flex-col col-span-5">
-                  <div className="flex items-center gap-x-3">
+            <div className="bg-gray-900/50 border border-gray-800 rounded-xl">
+               <div className="px-6 py-6 gap-y-6 flex flex-col col-span-5">
+                  <div className="flex items-center gap-x-4">
                      <GeneratedAvatar
                         variant="botttsNeutral"
                         seed={data.name}
-                        className="size-10"
+                        className="size-12"
                      />
-                     <h2 className="text-2xl font-medium">{data.name}</h2>
+                     <h2 className="text-2xl font-medium text-white">
+                        {data.name}
+                     </h2>
                   </div>
                   <Badge
                      variant="outline"
-                     className="flex items-center gap-x-2 [&>svg]:size-4"
+                     className="flex items-center gap-x-2 [&>svg]:size-4 w-fit bg-blue-500/10 text-blue-400 border-blue-400/30"
                   >
-                     <VideoIcon className="text-blue-700" />
+                     <VideoIcon className="text-blue-400" />
                      {data.meetingCount}{" "}
                      {data.meetingCount === 1 ? "meeting" : "meetings"}
                   </Badge>
                   <div className="flex flex-col gap-y-4">
-                     <p className="text-lg font-medium">Instructions</p>
-                     <p className="text-neutral-800">{data.instructions}</p>
+                     <p className="text-lg font-medium text-white">
+                        Instructions
+                     </p>
+                     <p className="text-gray-300 leading-relaxed">
+                        {data.instructions}
+                     </p>
                   </div>
                </div>
             </div>

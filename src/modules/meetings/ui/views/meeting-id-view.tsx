@@ -72,7 +72,7 @@ export const MeetingIdView = ({ meetingId }: Props) => {
             onOpenChange={setUpdateMeetingDialogOpen}
             initialValues={data}
          />
-         <div className="flex-1 py-4 px-4 md:px-8 flex flex-col gap-y-4">
+         <div className="flex-1 py-4 px-4 md:px-8 flex flex-col gap-y-4 bg-black min-h-screen">
             <MeetingIdViewHeader
                meetingId={meetingId}
                meetingName={data.name}
@@ -88,7 +88,7 @@ export const MeetingIdView = ({ meetingId }: Props) => {
                   isCancelling={false}
                />
             )}
-            {isCompleted && <div>Completed</div>}
+            {isCompleted && <div className="text-white">Completed</div>}
             {isActive && <ActiveState meetingId={meetingId} />}
          </div>
       </>

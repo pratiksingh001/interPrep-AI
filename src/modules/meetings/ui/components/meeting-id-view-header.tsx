@@ -34,21 +34,24 @@ export const MeetingIdViewHeader = ({
    onRemove,
 }: Props) => {
    return (
-      <div className="flex items-center, justify-between">
+      <div className="flex items-center justify-between bg-gray-900/50 rounded-xl border border-gray-800 p-6">
          <Breadcrumb>
             <BreadcrumbList>
                <BreadcrumbItem>
-                  <BreadcrumbLink asChild className="font-medium text-xl">
+                  <BreadcrumbLink
+                     asChild
+                     className="font-medium text-xl text-white hover:text-blue-400 transition-colors"
+                  >
                      <Link href="/meetings">My Meetings</Link>
                   </BreadcrumbLink>
                </BreadcrumbItem>
-               <BreadcrumbSeparator className="text-foreground text-xl font-medium [&>svg]:size-4">
+               <BreadcrumbSeparator className="text-gray-400 text-xl font-medium [&>svg]:size-4">
                   <ChevronRightIcon />
                </BreadcrumbSeparator>
                <BreadcrumbItem>
                   <BreadcrumbLink
                      asChild
-                     className="font-medium text-xl text-foreground"
+                     className="font-medium text-xl text-white"
                   >
                      <Link href={`/meetings/${meetingId}`}>{meetingName}</Link>
                   </BreadcrumbLink>
@@ -57,17 +60,26 @@ export const MeetingIdViewHeader = ({
          </Breadcrumb>
          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-               <Button variant="ghost">
+               <Button variant="ghost" className="text-white hover:bg-gray-800">
                   <MoreVerticalIcon />
                </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-               <DropdownMenuItem onClick={onEdit}>
-                  <PencilIcon className="size-4 text-black" />
+            <DropdownMenuContent
+               align="end"
+               className="bg-gray-900 border-gray-700"
+            >
+               <DropdownMenuItem
+                  onClick={onEdit}
+                  className="text-white hover:bg-gray-800"
+               >
+                  <PencilIcon className="size-4 text-white" />
                   Edit
                </DropdownMenuItem>
-               <DropdownMenuItem onClick={onRemove}>
-                  <TrashIcon className="size-4 text-black" />
+               <DropdownMenuItem
+                  onClick={onRemove}
+                  className="text-white hover:bg-gray-800"
+               >
+                  <TrashIcon className="size-4 text-white" />
                   Delete
                </DropdownMenuItem>
             </DropdownMenuContent>

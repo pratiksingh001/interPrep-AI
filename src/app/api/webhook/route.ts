@@ -4,14 +4,15 @@ import { agents, meetings } from "@/db/schema";
 import { streamVideo } from "@/lib/stream-video";
 
 import {
-//    CallEndedEvent,
-//    MessageNewEvent,
-//    CallTranscriptionReadyEvent,
-//    CallRecordingReadyEvent,
-    CallSessionParticipantLeftEvent,
-    CallSessionStartedEvent,
+   CallEndedEvent,
+   //    MessageNewEvent,
+   CallTranscriptionReadyEvent,
+   CallRecordingReadyEvent,
+   CallSessionParticipantLeftEvent,
+   CallSessionStartedEvent,
 } from "@stream-io/node-sdk";
 import { db } from "@/db";
+import { inngest } from "@/inngest/client";
 
 function verifySignatureWithSDK(body: string, signature: string) {
    return streamVideo.verifyWebhook(body, signature);
@@ -82,40 +83,96 @@ export async function POST(req: NextRequest) {
             startedAt: new Date(),
          })
          .where(eq(meetings.id, exixtingMeeting.id));
-      
+
       const [existingAgent] = await db
          .select()
          .from(agents)
-         .where(eq(agents.id, exixtingMeeting.agent_id))
+         .where(eq(agents.id, exixtingMeeting.agent_id));
 
-      if(!existingAgent){
-        return NextResponse.json(
+      if (!existingAgent) {
+         return NextResponse.json(
             { error: "Agent not found" },
             { status: 404 }
          );
       }
 
-      const call = streamVideo.video.call("default", meetingId)
+      const call = streamVideo.video.call("default", meetingId);
       const realTimeClient = await streamVideo.video.connectOpenAi({
-        call,
-        openAiApiKey: process.env.OPENAI_API_KEY!,
-        agentUserId: existingAgent.id
-      })
+         call,
+         openAiApiKey: process.env.OPENAI_API_KEY!,
+         agentUserId: existingAgent.id,
+      });
 
       realTimeClient.updateSession({
-        instructions: existingAgent.instructions
+         instructions: existingAgent.instructions,
+      });
+   } else if (eventType === "call.session_participant_left") {
+      const event = payload as CallSessionParticipantLeftEvent;
+      const meetingId = event.call_cid.split(":")[1];
+
+      if (!meetingId) {
+         return NextResponse.json(
+            { error: "Missing meeting id" },
+            { status: 400 }
+         );
+      }
+
+      const call = streamVideo.video.call("default", meetingId);
+      await call.end();
+   } else if (eventType === "call.session_ended") {
+      const event = payload as CallEndedEvent;
+      const meetingId = event.call.custom?.meetingId;
+
+      if (!meetingId) {
+         return NextResponse.json(
+            { error: "Missing meetingId" },
+            { status: 400 }
+         );
+      }
+
+      await db
+         .update(meetings)
+         .set({
+            status: "processing",
+            endedAt: new Date(),
+         })
+         .where(and(eq(meetings.id, meetingId), eq(meetings.status, "active")));
+   } else if (eventType === "call.transcription_ready") {
+      const event = payload as CallTranscriptionReadyEvent;
+      const meetingId = event.call_cid.split(":")[1];
+
+      const [updateMeeting] = await db
+         .update(meetings)
+         .set({
+            transcriptUrl: event.call_transcription.url,
+         })
+         .where(eq(meetings.id, meetingId))
+         .returning();
+
+      if (!updateMeeting) {
+         return NextResponse.json(
+            { error: "Meeting not found" },
+            { status: 404 }
+         );
+      }
+
+      await inngest.send({
+         name: "meetings/processing",
+         data: {
+            meetingId: updateMeeting.id,
+            transcriptUrl: updateMeeting.transcriptUrl
+         }
       })
-   }else if(eventType === "call.session_participant_left"){
-    const event = payload as CallSessionParticipantLeftEvent;
-    const meetingId = event.call_cid.split(":")[1];
+   } else if (eventType === "call.recording_ready") {
+      const event = payload as CallRecordingReadyEvent;
+      const meetingId = event.call_cid.split(":")[1];
 
-    if(!meetingId){
-        return NextResponse.json({error: "Missing meeting id"}, {status: 400})
-    }
-
-      const call = streamVideo.video.call("default", meetingId)
-      await call.end()
-
+      await db
+         .update(meetings)
+         .set({
+            recordingUrl: event.call_recording.url,
+         })
+         .where(eq(meetings.id, meetingId));
    }
 
    return NextResponse.json({ status: "ok" });
