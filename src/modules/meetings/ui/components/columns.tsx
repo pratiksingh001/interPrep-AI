@@ -13,20 +13,11 @@ import {
    LoaderIcon,
    ClockArrowUpIcon,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatDuration } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
-import humanizeDuration from "humanize-duration";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-
-const formatDuration = (seconds: number) => {
-   return humanizeDuration(seconds * 1000, {
-      largest: 1,
-      round: true,
-      units: ["h", "m", "s"],
-   });
-};
 
 const statusIconMap = {
    upcoming: ClockArrowUpIcon,
