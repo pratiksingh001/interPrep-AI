@@ -28,14 +28,25 @@ export const DashboardUserButton = () => {
    const router = useRouter();
    const isMobile = useIsMobile();
 
-   const onLogout = () => {
-      authClient.signOut({
-         fetchOptions: {
-            onSuccess: () => {
-               router.push("/");
+   const onLogout = async () => {
+      try {
+         await authClient.signOut({
+            fetchOptions: {
+               onSuccess: () => {
+                  router.push("/");
+               },
+               onError: (error) => {
+                  console.error("Logout error:", error);
+                  // Force redirect even if logout fails
+                  router.push("/");
+               },
             },
-         },
-      });
+         });
+      } catch (error) {
+         console.error("Logout error:", error);
+         // Force redirect even if logout fails
+         router.push("/");
+      }
    };
 
    if (isPending || !data?.user) {

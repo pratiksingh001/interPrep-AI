@@ -25,4 +25,14 @@ export const auth = betterAuth({
    }),
    secret: process.env.BETTER_AUTH_SECRET || "fallback-secret-for-development",
    baseURL: process.env.BETTER_AUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000",
+   advanced: {
+      crossSubDomainCookies: {
+         enabled: true,
+      },
+      generateId: () => crypto.randomUUID(),
+   },
+   trustedOrigins: [
+      "https://inter-prep-ai-ruddy.vercel.app",
+      "http://localhost:3000"
+   ],
 });
