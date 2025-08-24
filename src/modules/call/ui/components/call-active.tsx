@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { CallControls, SpeakerLayout } from "@stream-io/video-react-sdk";
+import { AgentAutoJoin } from "./agent-auto-join";
 
 interface Props {
    onLeave: () => void;
@@ -10,6 +11,7 @@ interface Props {
 export const CallActive = ({ onLeave, meetingName }: Props) => {
    return (
       <div className="flex flex-col justify-between p-4 h-full text-white">
+         <AgentAutoJoin />
          <div className="bg-[#011213] rounded-full p-4 flex items-center gap-4">
             <Link
                href="/"

@@ -131,45 +131,18 @@ export const meetingsRouter = createTRPCRouter({
       });
       return token;
    }),
-   create: protectedProcedure
-      .input(meetingsInsertSchema)
-      .mutation(async ({ input, ctx }) => {
-         const [createdMeeting] = await db
-            .insert(meetings)
-            .values({
-               name: input.name,
-               agent_id: input.agentId,
-               user_id: ctx.auth.user.id,
-            })
-            .returning();
-
-         // Todo: Create Stream Call & Upsert Stream User
-         const call = streamVideo.video.call("default", createdMeeting.id);
-         await call.create({
-            data: {
-               created_by_id: ctx.auth.user.id,
-               custom: {
-                  meetingId: createdMeeting.id,
-                  meetingName: createdMeeting.name,
-               },
-               settings_override: {
-                  transcription: {
-                     language: "en",
-                     mode: "auto-on",
-                     closed_caption_mode: "auto-on",
-                  },
-                  recording: {
-                     mode: "auto-on",
-                     quality: "1080p",
-                  },
-               },
-            },
-         });
-
+   generateAgentToken: protectedProcedure
+      .input(z.object({ agentId: z.string() }))
+      .mutation(async ({ ctx, input }) => {
          const [existingAgent] = await db
             .select()
             .from(agents)
-            .where(eq(agents.id, createdMeeting.agent_id));
+            .where(
+               and(
+                  eq(agents.id, input.agentId),
+                  eq(agents.user_id, ctx.auth.user.id)
+               )
+            );
 
          if (!existingAgent) {
             throw new TRPCError({
@@ -185,10 +158,76 @@ export const meetingsRouter = createTRPCRouter({
                role: "user",
                image: generateAvatarUri({
                   seed: existingAgent.name,
-                  variant: "initials",
+                  variant: "botttsNeutral",
                }),
+               custom: {
+                  instructions: existingAgent.instructions,
+                  isAgent: true,
+                  agentRole: existingAgent.name,
+               },
             },
          ]);
+         
+         const expirationTime = Math.floor(Date.now() / 1000) + 3600;
+         const issuedAt = Math.floor(Date.now() / 1000) - 60;
+
+         const token = streamVideo.generateUserToken({
+            user_id: existingAgent.id,
+            exp: expirationTime,
+            validity_in_seconds: issuedAt,
+         });
+         
+         return token;
+      }),
+   create: protectedProcedure
+      .input(meetingsInsertSchema)
+      .mutation(async ({ input, ctx }) => {
+         const [createdMeeting] = await db
+            .insert(meetings)
+            .values({
+               name: input.name,
+               agent_id: input.agentId,
+               user_id: ctx.auth.user.id,
+            })
+            .returning();
+
+         const [existingAgent] = await db
+            .select()
+            .from(agents)
+            .where(eq(agents.id, createdMeeting.agent_id));
+
+         if (!existingAgent) {
+            throw new TRPCError({
+               code: "NOT_FOUND",
+               message: "Agent not found",
+            });
+         }
+
+         // Create Stream Call with agent context
+         const call = streamVideo.video.call("default", createdMeeting.id);
+         await call.create({
+            data: {
+               created_by_id: ctx.auth.user.id,
+               custom: {
+                  meetingId: createdMeeting.id,
+                  meetingName: createdMeeting.name,
+                  agentId: existingAgent.id,
+                  agentName: existingAgent.name,
+                  agentInstructions: existingAgent.instructions,
+               },
+               settings_override: {
+                  transcription: {
+                     language: "en",
+                     mode: "auto-on",
+                     closed_caption_mode: "auto-on",
+                  },
+                  recording: {
+                     mode: "auto-on",
+                     quality: "1080p",
+                  },
+               },
+            },
+         });
          return createdMeeting;
       }),
    update: protectedProcedure
