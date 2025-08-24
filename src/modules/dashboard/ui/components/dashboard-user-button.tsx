@@ -35,16 +35,16 @@ export const DashboardUserButton = () => {
                onSuccess: () => {
                   router.push("/");
                },
-               onError: (error) => {
-                  console.error("Logout error:", error);
-                  // Force redirect even if logout fails
+               onError: (ctx) => {
+                  console.error("Logout failed:", ctx.error);
+                  // Even if server logout fails, redirect to clear client state
                   router.push("/");
                },
             },
          });
       } catch (error) {
          console.error("Logout error:", error);
-         // Force redirect even if logout fails
+         // Fallback: redirect anyway to clear client-side session
          router.push("/");
       }
    };

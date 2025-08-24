@@ -6,12 +6,12 @@ import * as schema from "@/db/schema";
 export const auth = betterAuth({
    socialProviders: {
       github: {
-         clientId: process.env.GITHUB_CLIENT_ID || "",
-         clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+         clientId: process.env.GITHUB_CLIENT_ID as string,
+         clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
       },
       google: {
-         clientId: process.env.GOOGLE_CLIENT_ID || "",
-         clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+         clientId: process.env.GOOGLE_CLIENT_ID as string,
+         clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       },
    },
    emailAndPassword: {
@@ -23,16 +23,14 @@ export const auth = betterAuth({
          ...schema,
       },
    }),
-   secret: process.env.BETTER_AUTH_SECRET || "fallback-secret-for-development",
-   baseURL: process.env.BETTER_AUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000",
-   advanced: {
-      crossSubDomainCookies: {
-         enabled: true,
-      },
-      generateId: () => crypto.randomUUID(),
+   session: {
+      expiresIn: 60 * 60 * 24 * 7, // 7 days
+      updateAge: 60 * 60 * 24, // 1 day
    },
-   trustedOrigins: [
-      "https://inter-prep-ai-ruddy.vercel.app",
-      "http://localhost:3000"
-   ],
+   advanced: {
+      cookiePrefix: "better-auth",
+      crossSubDomainCookies: {
+         enabled: false,
+      },
+   },
 });
