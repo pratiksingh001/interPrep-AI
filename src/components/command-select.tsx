@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import {
    CommandEmpty,
-   CommandDialog,
    CommandInput,
    CommandItem,
    CommandList,
@@ -21,7 +20,6 @@ interface Props {
    onSearch?: (value: string) => void;
    value: string;
    placeholder?: string;
-   isSearchable?: boolean;
    className?: string;
 }
 
@@ -31,7 +29,6 @@ export const CommandSelect = ({
    onSearch,
    value,
    placeholder = "Select an option",
-   isSearchable,
    className,
 }: Props) => {
    const [open, setOpen] = useState(false);

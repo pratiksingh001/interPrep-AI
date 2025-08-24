@@ -69,10 +69,10 @@ export const DashboardUserButton = () => {
                   <DrawerDescription>{data.user.email}</DrawerDescription>
                </DrawerHeader>
                <DrawerFooter>
-                  <Button variant="outline" onClick={() => {}}>
+                  {/* <Button variant="outline" onClick={() => {}}>
                      <CreditCardIcon className="size-4 text-black" />
                      Billing
-                  </Button>
+                  </Button> */}
                   <Button variant="outline" onClick={onLogout}>
                      <CreditCardIcon className="size-4 text-black" />
                      Logout

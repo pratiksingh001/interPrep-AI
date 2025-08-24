@@ -12,16 +12,14 @@ import { GridBackground } from "@/components/ui/grid-background";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import {
-   BotIcon,
    BrainIcon,
    SettingsIcon,
-   UserIcon,
    PlayIcon,
    ClockIcon,
-   ZapIcon,
    ActivityIcon,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { GeneratedAvatar } from "@/components/generated-avatar";
 
 const getAgentTypeColor = (type: string) => {
    switch (type?.toLowerCase()) {
@@ -38,17 +36,6 @@ const getAgentTypeColor = (type: string) => {
    }
 };
 
-const getAgentIcon = (name: string) => {
-   if (name?.toLowerCase().includes("technical")) {
-      return <BrainIcon className="h-4 w-4" />;
-   } else if (name?.toLowerCase().includes("behavioral")) {
-      return <UserIcon className="h-4 w-4" />;
-   } else if (name?.toLowerCase().includes("senior")) {
-      return <ZapIcon className="h-4 w-4" />;
-   } else {
-      return <BotIcon className="h-4 w-4" />;
-   }
-};
 
 export const AgentsView = () => {
    const router = useRouter();
@@ -100,7 +87,7 @@ export const AgentsView = () => {
                      <ExpandableCard
                         title={agent.name || "AI Assistant"}
                         subtitle={`AI agent created ${formatDistanceToNow(new Date(agent.createdAt))} ago`}
-                        icon={getAgentIcon(agent.name)}
+                        icon={<GeneratedAvatar seed={agent.name || "AI Assistant"} variant="botttsNeutral" className="h-8 w-8" />}
                         badge={
                            <Badge className={getAgentTypeColor("general")}>
                               General

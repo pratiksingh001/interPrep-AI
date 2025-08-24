@@ -42,10 +42,11 @@ export function ExpandableCard({
          layout
       >
          <div
-            className="p-6 relative"
+            className="p-4 sm:p-6 relative"
             onClick={() => expandedContent && setIsExpanded(!isExpanded)}
          >
-            <div className="flex items-start justify-between">
+            {/* Desktop Layout */}
+            <div className="hidden sm:flex items-start justify-between">
                <div className="flex items-start gap-4 flex-1">
                   {icon && (
                      <motion.div
@@ -93,6 +94,59 @@ export function ExpandableCard({
                   )}
                </div>
             </div>
+
+            {/* Mobile Layout */}
+            <div className="sm:hidden">
+               <div className="flex items-start gap-3 mb-3">
+                  {icon && (
+                     <motion.div
+                        className="p-2 rounded-lg bg-primary/10 text-primary flex-shrink-0"
+                        whileHover={{ scale: 1.05, rotate: 5 }}
+                        transition={{ duration: 0.2 }}
+                     >
+                        {icon}
+                     </motion.div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                     <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-semibold text-white text-base break-words">
+                           {title}
+                        </h3>
+                        {badge}
+                     </div>
+                     {subtitle && (
+                        <p className="text-gray-400 text-sm mb-2">{subtitle}</p>
+                     )}
+                  </div>
+                  {expandedContent && (
+                     <motion.div
+                        animate={{ rotate: isExpanded ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="flex-shrink-0"
+                     >
+                        <ChevronDownIcon className="h-4 w-4 text-gray-400" />
+                     </motion.div>
+                  )}
+               </div>
+               
+               <div className="mb-3">
+                  {children}
+               </div>
+               
+               {onAction && actionLabel && (
+                  <Button
+                     onClick={e => {
+                        e.stopPropagation();
+                        onAction();
+                     }}
+                     size="sm"
+                     variant="outline"
+                     className="w-full hover:bg-primary hover:text-primary-foreground"
+                  >
+                     {actionLabel}
+                  </Button>
+               )}
+            </div>
          </div>
 
          <AnimatePresence>
@@ -104,7 +158,7 @@ export function ExpandableCard({
                   transition={{ duration: 0.3 }}
                   className="border-t border-gray-800 bg-gray-800/20"
                >
-                  <div className="p-6 pt-4">{expandedContent}</div>
+                  <div className="p-4 pt-3 sm:p-6 sm:pt-4">{expandedContent}</div>
                </motion.div>
             )}
          </AnimatePresence>

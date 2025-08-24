@@ -17,6 +17,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -242,13 +243,15 @@ export const SignUpView = () => {
                </Form>
 
                <div className="bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col gap-y-4 items-center justify-center">
-                  <img
+                  <Image
                      src="/inter-prep-ai-logo.svg"
                      alt="logo"
+                     width={92}
+                     height={92}
                      className="h-[92px] w-[92px]"
                   />
                   <p className="text-2xl font-semibold text-white">
-                     InterPrep AI
+                     interPrep AI
                   </p>
                </div>
             </CardContent>

@@ -13,7 +13,7 @@ import {
    SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { BotIcon, StarIcon, VideoIcon, SparklesIcon } from "lucide-react";
+import { BotIcon, VideoIcon, SparklesIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,13 +33,13 @@ const firstSection = [
    },
 ];
 
-const secondSection = [
-   {
-      icon: StarIcon,
-      label: "Upgrade",
-      href: "/upgrade",
-   },
-];
+// const secondSection = [
+//    {
+//       icon: StarIcon,
+//       label: "Upgrade",
+//       href: "/upgrade",
+//    },
+// ];
 
 export const DashboardSidebar = () => {
    const pathname = usePathname();
@@ -66,7 +66,7 @@ export const DashboardSidebar = () => {
                      />
                   </motion.div>
                   <p className="text-2xl font-bold bg-gradient-to-r from-white to-sidebar-accent-foreground bg-clip-text text-transparent">
-                     InterPrep AI
+                     interPrep AI
                   </p>
                </Link>
             </motion.div>
@@ -141,72 +141,6 @@ export const DashboardSidebar = () => {
             <div className="px-4 py-3">
                <Separator className="opacity-20 bg-gradient-to-r from-transparent via-gray-700 to-transparent" />
             </div>
-
-            <SidebarGroup>
-               <SidebarGroupContent>
-                  <SidebarMenu>
-                     {secondSection.map((item, index) => {
-                        const isActive = pathname === item.href;
-                        return (
-                           <motion.div
-                              key={item.href}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{
-                                 duration: 0.4,
-                                 delay: (firstSection.length + index) * 0.1,
-                              }}
-                           >
-                              <SidebarMenuItem>
-                                 <SidebarMenuButton
-                                    asChild
-                                    className={cn(
-                                       "h-12 rounded-xl transition-all duration-300 group relative overflow-hidden",
-                                       "hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-orange-500/20",
-                                       "hover:shadow-lg hover:shadow-amber-500/10",
-                                       isActive &&
-                                          "bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 shadow-lg shadow-amber-500/20"
-                                    )}
-                                    isActive={isActive}
-                                 >
-                                    <Link
-                                       href={item.href}
-                                       className="flex items-center gap-3 w-full"
-                                    >
-                                       <motion.div
-                                          whileHover={{
-                                             scale: 1.1,
-                                             rotate: 10,
-                                          }}
-                                          transition={{ duration: 0.2 }}
-                                          className="p-2 rounded-lg bg-amber-500/20 text-amber-400"
-                                       >
-                                          <item.icon className="size-4" />
-                                       </motion.div>
-                                       <span className="text-sm font-medium tracking-tight text-gray-300 group-hover:text-amber-300">
-                                          {item.label}
-                                       </span>
-                                       {item.label === "Upgrade" && (
-                                          <motion.div
-                                             animate={{ scale: [1, 1.2, 1] }}
-                                             transition={{
-                                                duration: 2,
-                                                repeat: Infinity,
-                                             }}
-                                             className="ml-auto"
-                                          >
-                                             <SparklesIcon className="size-4 text-amber-400" />
-                                          </motion.div>
-                                       )}
-                                    </Link>
-                                 </SidebarMenuButton>
-                              </SidebarMenuItem>
-                           </motion.div>
-                        );
-                     })}
-                  </SidebarMenu>
-               </SidebarGroupContent>
-            </SidebarGroup>
          </SidebarContent>
 
          <SidebarFooter className="border-t border-gray-800 bg-gradient-to-r from-gray-900 to-gray-800">

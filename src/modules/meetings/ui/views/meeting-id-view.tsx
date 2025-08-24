@@ -4,7 +4,6 @@ import { ErrorState } from "@/components/error-state";
 import { LoadingState } from "@/components/loading-state";
 import { useTRPC } from "@/trpc/client";
 import {
-   queryOptions,
    useMutation,
    useQueryClient,
    useSuspenseQuery,
@@ -73,7 +72,7 @@ export const MeetingIdView = ({ meetingId }: Props) => {
             onOpenChange={setUpdateMeetingDialogOpen}
             initialValues={data}
          />
-         <div className="flex-1 py-4 px-4 md:px-8 flex flex-col gap-y-4 bg-black min-h-screen">
+         <div className="flex-1 py-3 px-3 sm:py-4 sm:px-4 md:px-8 flex flex-col gap-y-3 sm:gap-y-4 bg-black min-h-screen">
             <MeetingIdViewHeader
                meetingId={meetingId}
                meetingName={data.name}
@@ -85,8 +84,6 @@ export const MeetingIdView = ({ meetingId }: Props) => {
             {isUpcoming && (
                <UpcomingState
                   meetingId={meetingId}
-                  onCancelMeeting={() => {}}
-                  isCancelling={false}
                />
             )}
             {isCompleted && <CompletedState data={data }/>}

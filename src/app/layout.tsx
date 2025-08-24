@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-   title: "InterPrep AI",
+   title: "interPrep AI",
    description: "Your interview prep partner",
    icons: {
       icon: [

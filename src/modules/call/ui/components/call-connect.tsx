@@ -12,7 +12,6 @@ import {
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
-import { StreamClient } from "@stream-io/node-sdk";
 import { CallUI } from "./call-ui";
 
 interface Props {
